@@ -76,13 +76,83 @@ void pindah(char *lokasi, char *file, char *nama)
     execv("/bin/mv", argv);
   }
 }
-void copy(char *src, char *dest)
+void copy(char *src, char *dest, char *lokasi, char *nama)
 {
-  pid_t child1 = fork();
-  if (child1 == 0)
+  int status;
+  pid_t child = fork();
+  if (child == 0)
   {
     char *argv[] = {"cp", src, dest, NULL};
     execv("/bin/cp", argv);
+  }
+  // copy(src, dest, src2, file2);
+  //pindah(src2, dest, file2);
+  //void pindah(char *lokasi, char *file, char *nama)
+  while ((waitpid(child, &status, 0)) > 0)
+    ;
+  pid_t child2 = fork();
+  if (child2 == 0)
+  {
+    char *argv[] = {"mkdir", "-p", lokasi, NULL};
+    execv("/bin/mkdir", argv);
+  }
+  while ((waitpid(child2, &status, 0)) > 0)
+    ;
+  pid_t child3 = fork();
+
+  if (child3 == 0)
+  {
+    char nick[100];
+    char petname[100];
+    char umur[100];
+    char ket[100];
+
+    strcpy(nick, nama);
+    char delim[] = ";";
+    char *ptr = strtok(nick, delim);
+    int id = 1;
+
+    while (ptr != NULL)
+    {
+      if (id == 2)
+      {
+        sprintf(petname, "%s", ptr);
+      }
+      if (id == 3)
+      {
+        sprintf(umur, "%s", ptr);
+        strtok(umur, "_");
+        strtok(umur, "j");
+        if (umur[strlen(umur) - 1] == '.')
+        {
+          umur[strlen(umur) - 1] = '\0';
+        }
+      }
+      ptr = strtok(NULL, delim);
+      id++;
+    }
+
+    char loc[100];
+    strcpy(ket, lokasi);
+    strcpy(loc, lokasi);
+    strcat(loc, "/");
+    strcat(loc, petname);
+    strcat(loc, ".jpg");
+
+    FILE *fptr;
+    char st[100];
+    char fname[50];
+    strcpy(fname, lokasi);
+    strcat(fname, "/keterangan.txt");
+    fptr = fopen(fname, "a+");
+
+    fprintf(fptr, "nama : %s\n", petname);
+    fprintf(fptr, "umur : %s tahun\n\n", umur);
+
+    fclose(fptr);
+
+    char *argv[] = {"mv", dest, loc, NULL};
+    execv("/bin/mv", argv);
   }
 }
 
@@ -166,10 +236,17 @@ int main()
             char dest[100] = {"/home/juned/modul2/petshop/"};
             strcat(src, str);
             strcat(dest, file2);
-            copy(src, dest);
             strcat(src2, folder2);
-            pindah(src2, dest, file2);
+            //src=/home/juned/modul2/petshop/cat;joni;6_dog;daisy;9.jpg
+            //dest=/home/juned/modul2/petshop/
+            //src2=/home/juned/modul2/petshop/dog
+            //file2=dog;daisy;9.jpg
+            copy(src, dest, src2, file2);
+            //pindah(src2, dest, file2);
           }
+          //lokasi=/home/juned/modul2/petshop/cat
+          //src=/home/juned/modul2/petshop/cat;joni;6.jpg
+          //d_name=cat;joni;6.jpg
           pindah(lokasi, file, ep->d_name);
         }
       }
