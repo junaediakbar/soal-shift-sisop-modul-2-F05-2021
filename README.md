@@ -31,11 +31,9 @@ child1 = fork();
         execv("/bin/mkdir", argv);
     }
 ```
-Penjelasan mengenai perintah perintah diatas adalah :
-- `child1 = fork();` digunakan untuk membuat proses baru untuk membuat directory yang bernama Musyik.
-- `child2 = fork();` digunakan untuk membuat proses baru untuk membuat directory yang bernama Fylm.
-- `child3 = fork();` digunakan untuk membuat proses baru untuk membuat directory yang bernama Pyoto.
-- `execv("/bin/mkdir", argv)` digunakan untuk menjalankan proses mkdir untuk membuat sebuah direktori baru
+
+`child1 = fork();`, `child2 = fork();`, dan `child3 = fork();` digunakan untuk membuat proses baru pada pembuatan directory yang bernama Musyik, Pyoto,
+dan Fylm. Pada proses `execv("/bin/mkdir", argv)` akan digunakan untuk menjalankan proses mkdir yang dimana mengarah pada proses membuat sebuah direktori baru.
 
 ### Soal 1B
 Soal ini diminta untuk mendownload / mengunduh file zip yang tertera pada link yang diberikan.<br><br>
@@ -182,9 +180,8 @@ while (wait(&status6) > 0)
 `/usr/bin/find` untuk mencari pada `/home/raharja/modul2-1/MUSIK`, `/home/raharja/modul2-1/FILM`, dan juga
 `/home/raharja/modul2-1/FOTO`. `"-mindepth", "1"` untuk menandakan bahwa yang dicari adalah semua yang ber `type` 
 directory (`"f"`). Lalu dilakukan pemindahan semua file tersebut dengan `"mv -t ./Fylm {} +"`. `/bin/rm` untuk
-menghapus semua folder yang sudah kosong pada `/home/raharja/modul2-1/MUSIK`, `/home/raharja/modul2-1/FILM`, dan
-`/home/raharja/modul2-1/FOTO`, Dan juga menghapus semua file-file zip yang sudah di unduh sebelumnya. Lalu dilakukan 
-penghapusan semua file tersebut dengan `rm -r`.<br><br>
+menghapus semua file zip yang sudah sudah di ekstract sebelumnya pada `"/home/raharja/modul2-1/Musik_for_Stevany.zip", 
+/home/raharja/modul2-1/"Foto_for_Stevany.zip", /home/raharja/modul2-1/"Film_for_Stevany.zip"` dengan `"rm -r"`.<br><br>
 
 ### Soal 1E
 Soal ini diminta untuk semua proses yang dijalankan sebelumnya tersebut berjalan otomatis 6 jam sebelum 
@@ -201,9 +198,56 @@ if (t->tm_mon == 3 && t->tm_mday == 9 && t->tm_hour == 16 && t->tm_min == 22 && 
         exit(0);
 }
 ```
+Proses ini dilakukan pengecekan `(t->tm_mon == 3 && t->tm_mday == 9 && t->tm_hour == 16 && t->tm_min == 22 && t->tm_sec == 0)`, apakah semua proses
+tersebut tadi berjalan otomatis 6 jam sebelum ulang waktu ulang tahun stevany tersebut dimulai.
 
 ### Soal 1F
-Untuk soal ini diminta untuk semua folder di zip dengan nama Lopyu_Stevany.zip dan semua folder akan di delete(sehingga hanya menyisakan .zip)
+Untuk soal ini diminta pada waktu ulang tahunnya Stevany, untuk semua folder di zip dengan nama Lopyu_Stevany.zip dan 
+semua folder akan di delete(sehingga hanya menyisakan .zip).<br><br>
+
+Soal ini sama seperti soal 1E, yaitu dikerjakan dengan mengimplementasikan materi *Daemon Process* 
+yang sudah diajarkan pada modul2. Berikut bentuk implementasinya :
+
+```
+else if (t->tm_mon == 3 && t->tm_mday == 9 && t->tm_hour == 22 && t->tm_min == 22 && t->tm_sec == 0)
+{
+    child14 = fork();
+    if (child14 == 0)
+    {
+        child15 = fork();
+        if (child15 < 0)
+            exit(0);
+        if (child15 == 0)
+        {
+            char *arg[] = {"zip", "-q", "-rm", "Lopyu_Stevany.zip", "./Musyik", "./Fylm", "./Pyoto", NULL};
+            execv("/usr/bin/zip", arg);
+        }
+        while (wait(&status11) > 0)
+            ;
+        child16 = fork();
+        if (child16 < 0)
+            exit(0);
+        if (child16 == 0)
+        {
+            char *arg[] = {"rm", "-r", "./MUSIK", "./FILM", "./FOTO", NULL};
+            execv("/bin/rm", arg);
+        }
+        while (wait(&status11) > 0)
+            ;
+        exit(0);
+        }
+    }
+    
+    while (wait(&status12) > 0)
+        ;
+    sleep(1);
+}
+
+```
+Pada proses ini dilakukan pengecekan kembali `(t->tm_mon == 3 && t->tm_mday == 9 && t->tm_hour == 22 && t->tm_min == 22 && t->tm_sec == 0)`,
+apakah proses tersebut tadi berjalan saat waktu ulang tahun stevany dimulai. jika benar, maka dilakukan proses yaitu menzip `("/usr/bin/zip")`semua file yang ada
+folder `"./Musyik", "./Fylm", "./Pyoto"` dengan nama "Lopyu_Stevany.zip". `"/bin/rm"` digunakan untuk menjalankan proses rm yang dimana mengarah pada proses
+penghapusan semua folder `("./MUSIK", "./FILM", "./FOTO")` pada `/home/raharja/modul2-1` dengan `"rm -r"`.
 
 ## soal2
 ### Soal 2A
@@ -286,7 +330,7 @@ child2 = fork();
             strcpy(fol2, file2);
             char *folder2 = strtok(fol2, ";");
 
-            char src[100] = {"/home/juned/modul2/petshop/"};
+            char src[100] = {"/home/raharja/modul2/petshop/"};
             char src2[100] = {"/home/juned/modul2/petshop/"};
             char dest[100] = {"/home/juned/modul2/petshop/"};
             strcat(src, str);
