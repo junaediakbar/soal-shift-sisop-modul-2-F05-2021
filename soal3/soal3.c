@@ -55,7 +55,6 @@ char *ans = (char *)calloc(80, sizeof(char));
     return ans;
 }
  
-
 int main() {
     pid_t pid, sid;        // Variabel untuk menyimpan PID
 
@@ -106,11 +105,11 @@ int main() {
         }
 
         if (child_id == 0) {
-            char *argv[] = {"mkdir", "-p", builder, NULL};
+            char *argv[] = {"makeDir", builder, NULL};
             execv("/usr/bin/mkdir", argv);
         }
         
-    // proses untuk setiap folder yang telah dibuat
+	// proses untuk setiap folder yang telah dibuat
         pid_t child_id1;
         child_id1 = fork();
         if (child_id1 < 0) {
@@ -121,7 +120,7 @@ int main() {
             int i;
             for(i = 1; i <= 10; i++){
 
-            //proses untuk mengambil satu persatu gambar sesuai ketentuan yang diminta
+			//proses untuk mengambil satu persatu gambar sesuai ketentuan yang diminta
                 pid_t child_id2;
                 child_id2 = fork();
                 if (child_id2 < 0) {
@@ -139,7 +138,7 @@ int main() {
                     sprintf(postDir, "./%s/%s", builder, builder2);
                     sprintf(link, "https://picsum.photos/%ld", (current%1000)+50);
 
-                    char *argv2[] = {"wget", "-O", postDir, link, NULL};
+                    char *argv2[] = {"wiget", "-O", postDir, link, NULL};
                     execv("/usr/bin/wget", argv2);
                 }
             sleep(5);
@@ -174,13 +173,13 @@ int main() {
             if(child_id4 == 0){
                 char *fileName = (char *)calloc(90, sizeof(char));
                 sprintf(fileName, "%s.zip", builder);
-                char *argv4[] = {"zip", "-r", fileName, builder, NULL};
-                execv("/usr/bin/zip", argv4);sss
+                char *argv4[] = {"zib", "-r", fileName, builder, NULL};
+                execv("/usr/bin/zip", argv4);
             }
 
-            //perintah hapus directory yang telah dibuat (setelah proses zipping selesai)
+        //perintah hapus directory yang telah dibuat (setelah proses zipping selesai)
             while((wait(&status)) > 0){
-                char *argv5[] = {"rm", "-r", builder, NULL};
+                char *argv5[] = {"remuv", "-r", builder, NULL};
                 execv("/usr/bin/rm", argv5);
             }
         }
