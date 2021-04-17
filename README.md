@@ -1,5 +1,210 @@
 # soal-shift-sisop-modul-2-F05-2021
 ## soal1
+### Soal 1A
+Soal ini diminta untuk membuat folder baru sesuai dengan keinginan steven,
+yaitu dengan nama Musyik untuk mp3, Fylm untuk mp4, dan Pyoto untuk jpg.<br><br>
+
+Berikut merupakan fungsi untuk membuat folder / directory baru:
+```
+child1 = fork();
+    if (child1 < 0)
+        exit(0);
+    if (child1 == 0)
+    {
+        char *argv[] = {"mkdir", "-p", pathmusik, NULL};
+        execv("/bin/mkdir", argv);
+    }
+    child2 = fork();
+    if (child2 < 0)
+        exit(0);
+    if (child2 == 0)
+    {
+        char *argv[] = {"mkdir", "-p", pathfoto, NULL};
+        execv("/bin/mkdir", argv);
+    }
+    child3 = fork();
+    if (child3 < 0)
+        exit(0);
+    if (child3 == 0)
+    {
+        char *argv[] = {"mkdir", "-p", pathfilm, NULL};
+        execv("/bin/mkdir", argv);
+    }
+```
+Penjelasan mengenai perintah perintah diatas adalah :
+- `child1 = fork();` digunakan untuk membuat proses baru untuk membuat directory yang bernama Musyik.
+- `child2 = fork();` digunakan untuk membuat proses baru untuk membuat directory yang bernama Fylm.
+- `child3 = fork();` digunakan untuk membuat proses baru untuk membuat directory yang bernama Pyoto.
+- `execv("/bin/mkdir", argv)` digunakan untuk menjalankan proses mkdir untuk membuat sebuah direktori baru
+
+### Soal 1B
+Soal ini diminta untuk mendownload / mengunduh file zip yang tertera pada link yang diberikan.<br><br>
+
+Proses ini dapat dilakukan sebagai berikut : 
+
+```
+while (wait(&status) > 0)
+    ;
+    child4 = fork();
+    if (child4 < 0)
+        exit(0);
+    if (child4 == 0)
+	{
+        printf("sudah didownload\n");
+        char *arg[] = {"wget", "--no-check-certificate", linkmusik, "-O", "Musik_for_Stevany.zip", "-o", "/dev/null", NULL};
+        execv("/usr/bin/wget", arg);
+    }
+    while (wait(&status1) > 0)
+        ;
+    child5 = fork();
+    if (child5 < 0)
+        exit(0);
+    if (child5 == 0)
+    {
+        printf("sudah didownload\n");
+        char *arg[] = {"wget", "--no-check-certificate", linkfoto, "-O", "Foto_for_Stevany.zip", "-o", "/dev/null", NULL};
+        execv("/usr/bin/wget", arg);
+    }
+    while (wait(&status2) > 0)
+        ;
+    child6 = fork();
+    if (child5 < 0)
+        exit(0);
+    if (child6 == 0)
+    {
+        printf("sudah didownload\n");
+        char *arg[] = {"wget", "--no-check-certificate", linkfilm, "-O", "Film_for_Stevany.zip", "-o", "/dev/null", NULL};
+        execv("/usr/bin/wget", arg);
+    }
+```
+Dilakukannya perulangan `while (wait(&status) > 0)` yang menandakan bahwa adanya proses untuk menunggu dari
+proses yang dijalankan sebelumnya itu sudah selesai atau belum. `"/usr/bin/wget";` digunakan untuk menjalankan 
+perintah `wget` yang dimana perintah tersebut mengarah pada proses mendownload file zip dari setiap link yang 
+diberikan.<br><br> 
+
+### Soal 1C
+Soal ini diminta untuk menunzip atau menekstract file-file zip yang sudah didownload sebelumnya.<br><br>
+
+Untuk proses ini dapat dilakukan sebagai berikut:
+```
+while (wait(&status3) > 0)
+    ;
+    child7 = fork();
+    if (child7 < 0)
+        exit(0);
+    if (child7 == 0)
+    {
+        char *arg[] = {"unzip", "-o", "-q", "./Musik_for_Stevany.zip", NULL};
+        execv("/usr/bin/unzip", arg);
+    }
+    while (wait(&status4) > 0)
+        ;
+    child8 = fork();
+    if (child8 < 0)
+	    exit(0);
+    if (child8 == 0)
+    {
+        char *arg[] = {"unzip", "-o", "-q", "./Foto_for_Stevany.zip", NULL};
+        execv("/usr/bin/unzip", arg);
+    }
+    while (wait(&status5) > 0)
+        ;
+    child9 = fork();
+    if (child9 < 0)
+        exit(0);
+    if (child9 == 0)
+    {
+        char *arg[] = {"unzip", "-o", "-q", "./Film_for_Stevany.zip", NULL};
+        execv("/usr/bin/unzip", arg);
+    }
+```
+Pada setiap proses ini terdapat juga proses perulangan `wait(&status...) > 0` yang dimana untuk menunggu
+dari proses yang dijalankan sebelumnya itu sudah selesai atau belum. `"/usr/bin/unzip"` digunakan untuk menjalankan 
+perintah `unzip` yang dimana perintah tersebut mengarah pada proses menekstract keseluruhan file-file zip yang sudah
+diunduh sebelumnya.<br><br>   
+
+### Soal 1D
+Soal ini diminta untuk memindahkan semua file yang berada di folder zip yang sudah di ekstract sebelumnya
+ke folder baru yang sudah dibuat.<br><br>
+
+Proses ini dapat dilakukan sebagai berikut : 
+```
+while (wait(&status6) > 0)
+    ;
+    child10 = fork();
+    if (child10 < 0)
+        exit(0);
+    if (child10 == 0)
+    {
+        char *argv[] = {"find", "./MUSIK", "-mindepth", "1", "-type", "f", "-exec", "mv",
+                        "-t", "./Musyik", "{}", "+", NULL};
+        execv("/usr/bin/find", argv);
+    }
+    while (wait(&status7) > 0)
+        ;
+    child11 = fork();
+    if (child11 < 0)
+        exit(0);
+    if (child11 == 0)
+    {
+        char *argv[] = {"find", "./FOTO", "-mindepth", "1", "-type", "f", "-exec", "mv",
+                        "-t", "./Pyoto", "{}", "+", NULL};
+        execv("/usr/bin/find", argv);
+    }
+    while (wait(&status8) > 0)
+        ;
+    child12 = fork();
+    if (child12 < 0)
+        exit(0);
+    if (child12 == 0)
+    {
+        char *argv[] = {"find", "./FILM", "-mindepth", "1", "-type", "f", "-exec", "mv",
+                        "-t", "./Fylm", "{}", "+", NULL};
+        execv("/usr/bin/find", argv);
+    }
+    //Hapus File
+    while (wait(&status9) > 0)
+        ;
+    child13 = fork();
+    if (child13 < 0)
+        exit(0);
+    if (child13 == 0)
+    {
+        char *argv[] = {"rm", "-r", "Musik_for_Stevany.zip", "Foto_for_Stevany.zip", "Film_for_Stevany.zip", NULL};
+        execv("/bin/rm", argv);
+    }
+    while (wait(&status10) > 0)
+        ;
+    exit(0);
+    }
+```
+
+`/usr/bin/find` untuk mencari pada `/home/raharja/modul2-1/MUSIK`, `/home/raharja/modul2-1/FILM`, dan juga
+`/home/raharja/modul2-1/FOTO`. `"-mindepth", "1"` untuk menandakan bahwa yang dicari adalah semua yang ber `type` 
+directory (`"f"`). Lalu dilakukan pemindahan semua file tersebut dengan `"mv -t ./Fylm {} +"`. `/bin/rm` untuk
+menghapus semua folder yang sudah kosong pada `/home/raharja/modul2-1/MUSIK`, `/home/raharja/modul2-1/FILM`, dan
+`/home/raharja/modul2-1/FOTO`, Dan juga menghapus semua file-file zip yang sudah di unduh sebelumnya. Lalu dilakukan 
+penghapusan semua file tersebut dengan `rm -r`.<br><br>
+
+### Soal 1E
+Soal ini diminta untuk semua proses yang dijalankan sebelumnya tersebut berjalan otomatis 6 jam sebelum 
+waktu ulang tahun Stevany.<br><br>
+
+Soal ini dikerjakan dengan mengimplementasikan materi *Daemon Process* 
+yang sudah diajarkan pada modul2. Berikut bentuk implementasinya :
+
+```
+if (t->tm_mon == 3 && t->tm_mday == 9 && t->tm_hour == 16 && t->tm_min == 22 && t->tm_sec == 0)
+{
+    child = fork();
+    if (child < 0)
+        exit(0);
+}
+```
+
+### Soal 1F
+Untuk soal ini diminta untuk semua folder di zip dengan nama Lopyu_Stevany.zip dan semua folder akan di delete(sehingga hanya menyisakan .zip)
+
 ## soal2
 ### Soal 2A
 Pada soal 2a diminta untuk meng-extract file zip yang diberikan yaitu *pets.zip* ke folder `/petshop`dapat dilakukan pada proses berikut
