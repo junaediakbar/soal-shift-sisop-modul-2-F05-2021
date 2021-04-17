@@ -188,7 +188,9 @@ Soal ini diminta untuk semua proses yang dijalankan sebelumnya tersebut berjalan
 waktu ulang tahun Stevany.<br><br>
 
 Soal ini dikerjakan dengan mengimplementasikan materi *Daemon Process* 
-yang sudah diajarkan pada modul2. Berikut bentuk implementasinya :
+yang sudah diajarkan pada modul2. 
+
+Berikut bentuk implementasinya :
 
 ```
 if (t->tm_mon == 3 && t->tm_mday == 9 && t->tm_hour == 16 && t->tm_min == 22 && t->tm_sec == 0)
@@ -206,7 +208,9 @@ Untuk soal ini diminta pada waktu ulang tahunnya Stevany, untuk semua folder di 
 semua folder akan di delete(sehingga hanya menyisakan .zip).<br><br>
 
 Soal ini sama seperti soal 1E, yaitu dikerjakan dengan mengimplementasikan materi *Daemon Process* 
-yang sudah diajarkan pada modul2. Berikut bentuk implementasinya :
+yang sudah diajarkan pada modul2. 
+
+Berikut bentuk implementasinya :
 
 ```
 else if (t->tm_mon == 3 && t->tm_mday == 9 && t->tm_hour == 22 && t->tm_min == 22 && t->tm_sec == 0)
