@@ -865,7 +865,7 @@ char *ans = (char *)calloc(80, sizeof(char));
 
 ```
 
-Penjelasan mengenai perintah perintah diatas adalah :
+Penjelasan mengenai perintah - perintah diatas adalah :
 - `char *ans = (char *)calloc(80, sizeof(char));` digunakan untuk membuat string yang akan menyimpan
 jawaban.
 - `ch = message[i];` mengambil karakter dari source string yang diberikan.
@@ -945,9 +945,3 @@ Ketika proses pembuatan *status.txt* dijalankan, pada directory yang telah dibua
 
 <br> Setelah itu, akan terbentuk proses untuk zip dan juga remove directory yang telah kita buat. Ilustrasi gambarnya adalah sebagai berikut :
 <img src="images/soal3/3cZipInside.PNG">
-
-### Soal 3D
-Tidak paham cara membuat 2 executable program dengan fungsi yang berbeda dari satu source code yang sama.<br>
-
-### Soal 3E
-Melihat soal 3 ini pengerjaannya berkelanjutan (kontinu dari A - E), jadi 3E belum dicoba karena 3D masih belum.<br>
