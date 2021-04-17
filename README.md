@@ -464,6 +464,8 @@ hasil sesuai dengan format yang diminta pada soal.
 
 <br><br> Sedangkan pada program utamanya (*yang dituliskan setelah while*), berisikan :
 ```
+...
+
 pid_t child_id;
 char *builder = NULL;
 int status;
@@ -480,11 +482,14 @@ if (child_id < 0) {
 }
 
 if (child_id == 0) {
-	char *argv[] = {"mkdir", "-p", builder, NULL};
+	char *argv[] = {"makeDir", builder, NULL};
 	execv("/usr/bin/mkdir", argv);
 }
 
 sleep(40)
+
+...
+
 ```
 Penjelasan mengenai perintah perintah diatas adalah :
 - `pid_t child_id;` digunakan untuk menyimpan nilai PID dari child_id yang akan dibuat.
@@ -492,8 +497,10 @@ Penjelasan mengenai perintah perintah diatas adalah :
 dari fungsi getTime yang sebelumnya telah dibuat.
 - `current = time(NULL);` digunakan untuk megambil dan menyimpan data waktu saat ini dalam
 EPOCH seconds ke dalam variabel current yang telah dibuat.
+- `execv("/usr/bin/mkdir", argv);` digunakan untuk menjalankan perintah mkdir untuk membuat direktori baru.
 - `child_id = fork();` digunakan untuk membuat proses baru untuk membuat directory.
 - `sleep(40)`, setelah membuat folder, proses akan menunggu ke 40 detik selanjutnya.<br><br>
+
 
 Ketika proses dijalankan, ilustrasi pada working directory akan terlihat sebagai berikut :<br>
 <img src="images/soal3/3a.png">
@@ -536,12 +543,14 @@ for(i = 1; i <= 10; i++){
 		sprintf(postDir, "./%s/%s", builder, builder2);
 		sprintf(link, "https://picsum.photos/%ld", (current%1000)+50);
 
-		char *argv2[] = {"wget", "-O", postDir, link, NULL};
-		execv("/usr/bin/wget", argv2);
+		char *argv2[] = {"wiget", "-O", postDir, link, NULL};
+        execv("/usr/bin/wget", argv2);
 	}
 sleep(5);
 }
-	...
+
+...
+
 ```
 Penjelasan mengenai perintah perintah diatas adalah :
 - `child_id1 = fork();` digunakan untuk membuat proses baru kembali sebagai handler "proses pada setiap folder yang dibuat"
@@ -565,9 +574,6 @@ hanyalah file hasil zip saja.<br><br>
 
 Karena pada perintah soal diinstruksikan memasukkan algoritma Caesar Chiper, maka ditambahkan fungsi :
 ```
-
-...
-
 char *encrypt(char *message, int s){
 char ch;
 char *ans = (char *)calloc(80, sizeof(char));
@@ -604,8 +610,6 @@ char *ans = (char *)calloc(80, sizeof(char));
     return ans;
 }
 
-...
-
 ```
 
 Penjelasan mengenai perintah perintah diatas adalah :
@@ -621,6 +625,8 @@ fungsi akan menghandle dengan `ch = ch - 'Z' + 'A' - 1;` dan `ch = ch - 'z' + 'a
 
 Sedangkan, pada program utama juga ditambahkan perintah :
 ```
+...
+
 while ((wait(&status)) > 0);
 
 //Buat Status.TXT di folder sebelum di zipping
@@ -650,14 +656,17 @@ while ((wait(&status)) > 0);
 	if(child_id4 == 0){
 		char *fileName = (char *)calloc(90, sizeof(char));
 		sprintf(fileName, "%s.zip", builder);
-		char *argv4[] = {"zip", "-r", fileName, builder, NULL};
-		execv("/usr/bin/zip", argv4);
+		char *argv4[] = {"zib", "-r", fileName, builder, NULL};
+        execv("/usr/bin/zip", argv4);
 	}
 
 	//perintah hapus directory yang telah dibuat (setelah proses zipping selesai)
 	while((wait(&status)) > 0){
-		char *argv5[] = {"rm", "-r", builder, NULL};
-		execv("/usr/bin/rm", argv5);
+	char *argv5[] = {"remuv", "-r", builder, NULL};
+	execv("/usr/bin/rm", argv5);
+	
+...
+
 ```
 
 Penjelasan mengenai perintah perintah diatas adalah :
