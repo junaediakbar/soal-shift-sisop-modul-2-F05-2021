@@ -136,7 +136,7 @@ int main() {
                     char *postDir = (char *)calloc(160, sizeof(char));
                     char *link = (char *)calloc(80, sizeof(char));
                     sprintf(postDir, "./%s/%s", builder, builder2);
-                    sprintf(link, "https://picsum.photos/%ld", (current%1000)+50);
+                    sprintf(link, "https://picsum.photos/%lu", (current%1000)+50);
 
                     char *argv2[] = {"wiget", "-O", postDir, link, NULL};
                     execv("/usr/bin/wget", argv2);
