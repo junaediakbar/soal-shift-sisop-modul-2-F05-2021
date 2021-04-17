@@ -6,84 +6,11 @@
 #include <errno.h>
 #include <unistd.h>
 #include <syslog.h>
-#include <dirent.h>
-#include <wait.h>
 #include <string.h>
+#include <ctype.h>
 #include <time.h>
- 
-int checkdirexist(char *pathname)
-{
-    struct stat info;
-    if (stat(pathname, &info) != 0)
-    {
-        return 0;
-    }
-    else if (info.st_mode & S_IFDIR)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-}
- 
-void makedir(char *lokasi)
-{
-    pid_t child, child1, child2, child3, child4, child5, child6;
-    int status;
-    child = fork();
- 
-    if (child == 0)
-    {
-        char *argv[] = {"mkdir", "-p", lokasi, NULL};
-        execv("/bin/mkdir", argv);
-    }
-}
-void extract(char *src, char *dest, char *foltype, char *origin)
-{
-    pid_t child;
-    int status;
-    child = fork();
- 
-    if (child == 0)
-    {
-        printf("===%s===", src);
-        char *argv[] = {"unzip", src, "-d", origin, NULL};
-        execv("/usr/bin/unzip", argv);
-    }
- 
-    while ((waitpid(child, &status, 0)) > 0)
-        ;
-    pid_t child1 = fork();
- 
-    if (child1 == 0)
-    {
-        printf("====================%s================", foltype);
-        char *argv[] = {"find", foltype, "-mindepth", "1", "-type", "f", "-exec", "mv",
-                        "-t", dest, "{}", "+", NULL};
-        execv("/usr/bin/find", argv);
-    }
- 
-    while ((waitpid(child1, &status, 0)) > 0)
-        ;
-    pid_t child2 = fork();
- 
-    if (child2 == 0)
-    {
-        char *argv[] = {"rm", "-r", foltype, NULL};
-        execv("/bin/rm", argv);
-    }
-    while ((waitpid(child2, &status, 0)) > 0)
-        ;
-    pid_t child3 = fork();
- 
-    if (child3 == 0)
-    {
-        char *argv[] = {"rm", "-r", src, NULL};
-        execv("/bin/rm", argv);
-    }
-}
+#include <wait.h>
+#include <dirent.h>
  
 int main()
 {
@@ -113,7 +40,7 @@ int main()
         exit(EXIT_FAILURE);
     }
  
-    if ((chdir("/")) < 0)
+    if ((chdir("/home/juned/modul2-1")) < 0)
     {
         exit(EXIT_FAILURE);
     }
@@ -122,91 +49,207 @@ int main()
     close(STDOUT_FILENO);
     close(STDERR_FILENO);
  
+    int status, status1, status2, status3, status4, status5, status6, status7, status8, status9, status10, status11, status12;
+ 
     while (1)
     {
-        // Tulis program kalian di sini
-        time_t now;
-        struct tm *now_tm;
-        int hour, min, sec, date, mon;
-        now = time(NULL);
-        now_tm = localtime(&now);
-        hour = now_tm->tm_hour;
-        min = now_tm->tm_min;
-        sec = now_tm->tm_sec;
-        date = now_tm->tm_mday;
-        mon = now_tm->tm_mon;
-        mon += 1;
- 
-        int shour, smin, sdate, smon;
-        shour = 22;
-        smin = 22;
-        sdate = 9;
-        smon = 4;
-        char path[100] = {"/home/raharja/modul2-1/"};
-        char pathfilm[100] = {"/home/raharja/modul2-1/Fylm"};
-        char pathmusik[100] = {"/home/raharja/modul2-1/Musyik"};
-        char pathfoto[100] = {"/home/raharja/modul2-1/Pyoto"};
+        char path[100] = {"/home/juned/modul2-1/"};
+        char pathfilm[100] = {"/home/juned/modul2-1/Fylm"};
+        char pathmusik[100] = {"/home/juned/modul2-1/Musyik"};
+        char pathfoto[100] = {"/home/juned/modul2-1/Fyoto"};
         char linkfilm[100] = {"https://drive.google.com/uc?id=1ktjGgDkL0nNpY-vT7rT7O6ZI47Ke9xcp&export=download"};
         char linkmusik[100] = {"https://drive.google.com/uc?id=1ZG8nRBRPquhYXq_sISdsVcXx5VdEgi-J&export=download"};
         char linkfoto[100] = {"https://drive.google.com/uc?id=1FsrAzb9B5ixooGUs0dGiBr-rC7TS9wTD&export=download"};
-        char locmusik[100] = {"/home/raharja/modul2-1/Musyik/Musik_for_Stevany.zip"};
-        char locfoto[100] = {"/home/raharja/modul2-1/Fyoto/Foto_for_Stevany.zip"};
-        char locfilm[100] = {"/home/raharja/modul2-1/Fylm/Film_for_Stevany.zip"};
-        if (hour == shour - 6 && min == smin && date == sdate && mon == smon)
-        {
-            FILE *fptr;
-            char fname[50] = {"/home/raharja/modul2-1/jam.txt"};
-            fptr = fopen(fname, "a+");
-            fprintf(fptr, "the date is %d/ %d and the time is %d : %d : %d\n", date, mon, hour, min, sec);
-            fclose(fptr);
-            pid_t child,
-                child1, child2, child3, child4, child5, child6;
-            int status;
-            makedir("/home/raharja/modul2-1/Musyik");
-            makedir("/home/raharja/modul2-1/Pyoto");
-            makedir("/home/raharja/modul2-1/Fylm");
-            sleep(5);
-            child = fork();
+        char locmusik[100] = {"/home/juned/modul2-1/Musik_for_Stevany.zip"};
+        char locfoto[100] = {"/home/juned/modul2-1/Foto_for_Stevany.zip"};
+        char locfilm[100] = {"/home/juned/modul2-1/Fylm.zip"};
+        pid_t child, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11, child12, child13, child14, child15, child16, child17, child18;
  
+        time_t now = time(NULL);
+        struct tm *t = localtime(&now);
+ 
+        //soal e
+        if (t->tm_mon == 3 && t->tm_mday == 9 && t->tm_hour == 16 && t->tm_min == 22 && t->tm_sec == 0)
+        {
+            child = fork();
+            if (child < 0)
+                exit(0);
             if (child == 0)
             {
+                //Soal 1a
+                child1 = fork();
+                if (child1 < 0)
+                    exit(0);
+                if (child1 == 0)
+                {
+                    char *argv[] = {"mkdir", "-p", pathmusik, NULL};
+                    execv("/bin/mkdir", argv);
+                }
+                child2 = fork();
+                if (child2 < 0)
+                    exit(0);
+                if (child2 == 0)
+                {
+                    char *argv[] = {"mkdir", "-p", pathfoto, NULL};
+                    execv("/bin/mkdir", argv);
+                }
+                child3 = fork();
+                if (child3 < 0)
+                    exit(0);
+                if (child3 == 0)
+                {
+                    char *argv[] = {"mkdir", "-p", pathfilm, NULL};
+                    execv("/bin/mkdir", argv);
+                }
+                //Soal 1b
+                while (wait(&status) > 0)
+                    ;
+                child4 = fork();
+                if (child4 < 0)
+                    exit(0);
+                if (child4 == 0)
+                {
+                    printf("sudah didownload\n");
+                    char *arg[] = {"wget", "--no-check-certificate", linkmusik, "-O", "Musik_for_Stevany.zip", "-o", "/dev/null", NULL};
+                    execv("/usr/bin/wget", arg);
+                }
+                while (wait(&status1) > 0)
+                    ;
+                child5 = fork();
+                if (child5 < 0)
+                    exit(0);
+                if (child5 == 0)
+                {
+                    printf("sudah didownload\n");
+                    char *arg[] = {"wget", "--no-check-certificate", linkfoto, "-O", "Foto_for_Stevany.zip", "-o", "/dev/null", NULL};
+                    execv("/usr/bin/wget", arg);
+                }
+                while (wait(&status2) > 0)
+                    ;
+                child6 = fork();
+                if (child5 < 0)
+                    exit(0);
+                if (child6 == 0)
+                {
+                    printf("sudah didownload\n");
+                    char *arg[] = {"wget", "--no-check-certificate", linkfilm, "-O", "Film_for_Stevany.zip", "-o", "/dev/null", NULL};
+                    execv("/usr/bin/wget", arg);
+                }
+                //soal1c
+                while (wait(&status3) > 0)
+                    ;
+                child7 = fork();
+                if (child7 < 0)
+                    exit(0);
+                if (child7 == 0)
+                {
+                    char *arg[] = {"unzip", "-o", "-q", "./Musik_for_Stevany.zip", NULL};
+                    execv("/usr/bin/unzip", arg);
+                }
+                while (wait(&status4) > 0)
+                    ;
+                child8 = fork();
+                if (child8 < 0)
+                    exit(0);
+                if (child8 == 0)
+                {
+                    char *arg[] = {"unzip", "-o", "-q", "./Foto_for_Stevany.zip", NULL};
+                    execv("/usr/bin/unzip", arg);
+                }
+                while (wait(&status5) > 0)
+                    ;
+                child9 = fork();
+                if (child9 < 0)
+                    exit(0);
+                if (child9 == 0)
+                {
+                    char *arg[] = {"unzip", "-o", "-q", "./Film_for_Stevany.zip", NULL};
+                    execv("/usr/bin/unzip", arg);
+                }
  
-                printf("sudah di download\n");
-                char *argv[] = {"wget", "--no-check-certificate", linkmusik, "-O", "/home/raharja/modul2-1/Musik_for_Stevany.zip""Musyik.zip", NULL};
-                execv("/usr/bin/wget", argv);
-            }
-            while ((waitpid(child, &status, 0)) > 0)
-                ;
-            child1 = fork();
-            if (child1 == 0)
-            {
- 
-                printf("sudah di download\n");
-                char *argv[] = {"wget", "--no-check-certificate", linkfoto, "-O", "/home/raharja/modul2-1/Foto_for_Stevany.zip", NULL};
-                execv("/usr/bin/wget", argv);
-            }
-            while ((waitpid(child1, &status, 0)) > 0)
-                ;
-            child2 = fork();
-            if (child2 == 0)
-            {
- 
-                printf("sudah di download\n");
-                char *argv[] = {"wget", "--no-check-certificate", linkfilm, "-O", "/home/raharja/modul2-1/Film_for_Stevany.zip", NULL};
-                execv("/usr/bin/wget", argv);
-            }
-            while ((waitpid(child2, &status, 0)) > 0)
-                ;
-            child3 = fork();
-            if (child3 == 0)
-            {
-                extract(locmusik, "/home/raharja/modul2-1/Musyik", "/home/raharja/modul2-1//MUSIK", path);
-                extract(locfoto, "/home/raharja/modul2-1/Pyoto", "/home/raharja/modul2-1//FOTO", path);
-                extract(locfilm, "/home/raharja/modul2-1/Fylm", "/home/raharja/modul2-1//FILM", path);
+                // Soal 1d
+                while (wait(&status6) > 0)
+                    ;
+                child10 = fork();
+                if (child10 < 0)
+                    exit(0);
+                if (child10 == 0)
+                {
+                    char *argv[] = {"find", "./MUSIK", "-mindepth", "1", "-type", "f", "-exec", "mv",
+                                    "-t", "./Musyik", "{}", "+", NULL};
+                    execv("/usr/bin/find", argv);
+                }
+                while (wait(&status7) > 0)
+                    ;
+                child11 = fork();
+                if (child11 < 0)
+                    exit(0);
+                if (child11 == 0)
+                {
+                    char *argv[] = {"find", "./FOTO", "-mindepth", "1", "-type", "f", "-exec", "mv",
+                                    "-t", "./Fyoto", "{}", "+", NULL};
+                    execv("/usr/bin/find", argv);
+                }
+                while (wait(&status8) > 0)
+                    ;
+                child12 = fork();
+                if (child12 < 0)
+                    exit(0);
+                if (child12 == 0)
+                {
+                    char *argv[] = {"find", "./FILM", "-mindepth", "1", "-type", "f", "-exec", "mv",
+                                    "-t", "./Fylm", "{}", "+", NULL};
+                    execv("/usr/bin/find", argv);
+                }
+                //Hapus File
+                while (wait(&status9) > 0)
+                    ;
+                child13 = fork();
+                if (child13 < 0)
+                    exit(0);
+                if (child13 == 0)
+                {
+                    char *argv[] = {"rm", "-r", "Musik_for_Stevany.zip", "Foto_for_Stevany.zip", "Film_for_Stevany.zip", NULL};
+                    execv("/bin/rm", argv);
+                }
+                while (wait(&status10) > 0)
+                    ;
+                exit(0);
             }
         }
  
-        sleep(3);
+        //soal f
+        else if (t->tm_mon == 3 && t->tm_mday == 9 && t->tm_hour == 22 && t->tm_min == 22 && t->tm_sec == 0)
+        {
+            child14 = fork();
+            if (child14 == 0)
+            {
+                child15 = fork();
+                if (child15 < 0)
+                    exit(0);
+                if (child15 == 0)
+                {
+                    char *arg[] = {"zip", "-q", "-rm", "Lopyu_Stevany.zip", "./Musyik", "./Fylm", "./Fyoto", NULL};
+                    execv("/usr/bin/zip", arg);
+                }
+                while (wait(&status11) > 0)
+                    ;
+                child16 = fork();
+                if (child16 < 0)
+                    exit(0);
+                if (child16 == 0)
+                {
+                    char *arg[] = {"rm", "-r", "./MUSIK", "./FILM", "./FOTO", NULL};
+                    execv("/bin/rm", arg);
+                }
+                while (wait(&status11) > 0)
+                    ;
+                exit(0);
+            }
+        }
+ 
+        while (wait(&status12) > 0)
+            ;
+        sleep(1);
     }
-    exit(EXIT_SUCCESS);
 }
