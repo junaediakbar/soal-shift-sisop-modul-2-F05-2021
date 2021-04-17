@@ -249,9 +249,9 @@ else if (t->tm_mon == 3 && t->tm_mday == 9 && t->tm_hour == 22 && t->tm_min == 2
 
 ```
 Pada proses ini dilakukan pengecekan kembali `(t->tm_mon == 3 && t->tm_mday == 9 && t->tm_hour == 22 && t->tm_min == 22 && t->tm_sec == 0)`,
-apakah proses tersebut tadi berjalan saat waktu ulang tahun stevany dimulai. jika benar, maka dilakukan proses yaitu menzip `("/usr/bin/zip")`semua file yang ada
-folder `"./Musyik", "./Fylm", "./Pyoto"` dengan nama "Lopyu_Stevany.zip". `"/bin/rm"` digunakan untuk menjalankan proses rm yang dimana mengarah pada proses
-penghapusan semua folder `("./MUSIK", "./FILM", "./FOTO")` pada `/home/raharja/modul2-1` dengan `"rm -r"`.
+apakah proses tersebut tadi berjalan saat waktu ulang tahun stevany dimulai. jika benar, maka dilakukan proses yaitu menzip `("/usr/bin/zip")` 
+semua file pada folder `"./Musyik", "./Fylm", "./Pyoto"` dengan nama "Lopyu_Stevany.zip". `"/bin/rm"` digunakan untuk menjalankan proses dari 
+rm yang dimana mengarah pada proses penghapusan semua folder yang ada di `/home/raharja/modul2-1` dengan `"rm -r"`.
 
 ## soal2
 ### Soal 2A
@@ -865,7 +865,7 @@ char *ans = (char *)calloc(80, sizeof(char));
 
 ```
 
-Penjelasan mengenai perintah - perintah diatas adalah :
+Penjelasan mengenai perintah perintah diatas adalah :
 - `char *ans = (char *)calloc(80, sizeof(char));` digunakan untuk membuat string yang akan menyimpan
 jawaban.
 - `ch = message[i];` mengambil karakter dari source string yang diberikan.
@@ -945,3 +945,9 @@ Ketika proses pembuatan *status.txt* dijalankan, pada directory yang telah dibua
 
 <br> Setelah itu, akan terbentuk proses untuk zip dan juga remove directory yang telah kita buat. Ilustrasi gambarnya adalah sebagai berikut :
 <img src="images/soal3/3cZipInside.PNG">
+
+### Soal 3D
+Tidak paham cara membuat 2 executable program dengan fungsi yang berbeda dari satu source code yang sama.<br>
+
+### Soal 3E
+Melihat soal 3 ini pengerjaannya berkelanjutan (kontinu dari A - E), jadi 3E belum dicoba karena 3D masih belum.<br>
