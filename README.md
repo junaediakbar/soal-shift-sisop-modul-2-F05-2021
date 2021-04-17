@@ -311,7 +311,7 @@ Ketika proses pembuatan *status.txt* dijalankan, pada directory yang telah dibua
 <img src="images/soal3/3cZipInside.PNG">
 
 ### Soal 3D
-Belum ada ide cara membuat 2 executable program dari satu source code<br>
+Tidak paham cara membuat 2 executable program dengan fungsi yang berbeda dari satu source code yang sama.<br>
 
 ### Soal 3E
-Melihat soal 3 ini pengerjaannya berkelanjutan (kontinu dari A - E), jadi 3E belum dicoba karena 3D masih belum.
+Melihat soal 3 ini pengerjaannya berkelanjutan (kontinu dari A - E), jadi 3E belum dicoba karena 3D masih belum.<br>
