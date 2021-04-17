@@ -1,6 +1,380 @@
 # soal-shift-sisop-modul-2-F05-2021
 ## soal1
 ## soal2
+### Soal 2A
+Pada soal 2a diminta untuk meng-extract file zip yang diberikan yaitu *pets.zip* ke folder `/petshop`dapat dilakukan pada proses berikut
+```
+child = fork();
+  if (child == 0)
+  {
+    char *argv[] = {"unzip", "/home/juned/modul2/pets.zip", "-d",
+                    "/home/juned/modul2/petshop", NULL};
+    execv("/usr/bin/unzip", argv);
+  }
+```
+Dan setelah itu diminta untuk menghapus folder yang tidak penting, hal tersebut dapat dilakukan dengan proses berikut
+```
+ while ((waitpid(child, &status, 0)) > 0)
+    ;
+  child1 = fork();
+  if (child1 == 0)
+  {
+    char *argv[] = {"find", "/home/juned/modul2/petshop", "-mindepth", "1", "-type", "d", "-exec", "rm",
+                    "-r", "{}", "+", NULL};
+    execv("/usr/bin/find", argv);
+  }
+```
+`/usr/bin/find` untuk mencari pada `/home/juned/modul2/petshop`,  `"-mindepth", "1"` untuk menandakan bahwa yang dicari adalah semua yang ber `type` directory (`"d"`). Lalu dilakukan remove/hapus semua file tersebut dengan `rm -r {} +`
+### Soal 2B
+Pada soal2b diminta untuk membuat folder sesuai jenis peliharaan seperti `/petshop/cat` untuk jenis kucing.
+Agar lebih memudahkan, perlu diperiksa nama dari setiap file terlebih dahulu dengan proses berikut
+```
+child2 = fork();
+  if (child2 == 0)
+  {
+    DIR *dp;
+    struct dirent *ep;
+    char path[] = {"/home/juned/modul2/petshop"};
+
+    dp = opendir(path);
+
+    if (dp != NULL)
+    {
+      while ((ep = readdir(dp)))
+      {
+        //puts(ep->d_name);
+
+        char str[100];
+
+        char new[100];
+        memset(str, 0, sizeof(str));
+        memset(new, 0, sizeof(new));
+        strcpy(str, ep->d_name);
+
+        if (ep->d_name[0] != '.')
+        {
+          int i = 0;
+
+          while (str[i] != ';')
+          {
+            new[i] = str[i];
+            i++;
+            if (str[i] == ';')
+            {
+              break;
+            }
+          }
+          i = 0;
+          char lokasi[100] = {"/home/juned/modul2/petshop/"};
+          char file[100] = {"/home/juned/modul2/petshop/"};
+
+          strcat(lokasi, new);
+          strcat(file, ep->d_name);
+          if (strchr(str, '_') != NULL)
+          {
+
+            char file[100];
+            strcpy(file, str);
+            char *file2 = strtok(file, "_");
+            file2 = strtok(NULL, "_");
+            char fol2[100];
+            strcpy(fol2, file2);
+            char *folder2 = strtok(fol2, ";");
+
+            char src[100] = {"/home/juned/modul2/petshop/"};
+            char src2[100] = {"/home/juned/modul2/petshop/"};
+            char dest[100] = {"/home/juned/modul2/petshop/"};
+            strcat(src, str);
+            strcat(dest, file2);
+            strcat(src2, folder2);
+            copy(src, dest, src2, file2);
+          }
+          pindah(lokasi, file, ep->d_name);
+        }
+      }
+```
+Perlu dilakukan pengecekan apakah file berisi 1 atau 2 peliaharan yang ditandai dengan adanya `"_"`.Maka dilakukan pengecekan dengan `strchr(str, '_')`.Sehingga ketika nama filenya tidak mengandung `"_"`nama folder yang akan dibuat akan tersimpan pada variabel `lokasi` dan akan langsung dipindahkan dengan fungsi `(lokasi, file, ep->d_name)`. Namun, ketika nama file terdapat `"_"` maka file akan diduplikat terlebih dahulu lalu dipindahkan.
+berikut adalah fungsi `pindah`
+```
+void pindah(char *lokasi, char *file, char *nama)
+{
+  int status;
+
+  pid_t child2 = fork();
+  if (child2 == 0)
+  {
+    char *argv[] = {"mkdir", "-p", lokasi, NULL};
+    execv("/bin/mkdir", argv);
+  }
+  while ((waitpid(child2, &status, 0)) > 0)
+    ;
+  pid_t child3 = fork();
+
+  if (child3 == 0)
+  {
+    char nick[100];
+    char petname[100];
+    char umur[100];
+    char ket[100];
+
+    strcpy(nick, nama);
+    char delim[] = ";";
+    char *ptr = strtok(nick, delim);
+    int id = 1;
+
+    while (ptr != NULL)
+    {
+      if (id == 2)
+      {
+        sprintf(petname, "%s", ptr);
+      }
+      if (id == 3)
+      {
+        sprintf(umur, "%s", ptr);
+        strtok(umur, "_");
+        strtok(umur, "j");
+        if (umur[strlen(umur) - 1] == '.')
+        {
+          umur[strlen(umur) - 1] = '\0';
+        }
+      }
+      ptr = strtok(NULL, delim);
+      id++;
+    }
+
+    char loc[100];
+    strcpy(ket, lokasi);
+    strcpy(loc, lokasi);
+    strcat(loc, "/");
+    strcat(loc, petname);
+    strcat(loc, ".jpg");
+
+    FILE *fptr;
+    char st[100];
+    char fname[50];
+    strcpy(fname, lokasi);
+    strcat(fname, "/keterangan.txt");
+    fptr = fopen(fname, "a+");
+
+    fprintf(fptr, "nama : %s\n", petname);
+    fprintf(fptr, "umur : %s tahun\n\n", umur);
+
+    fclose(fptr);
+
+    char *argv[] = {"mv", file, loc, NULL};
+    execv("/bin/mv", argv);
+  }
+}
+```
+berikut adalah fungsi `copy`
+```
+void copy(char *src, char *dest, char *lokasi, char *nama)
+{
+  int status;
+  pid_t child = fork();
+  if (child == 0)
+  {
+    char *argv[] = {"cp", src, dest, NULL};
+    execv("/bin/cp", argv);
+  }
+  // copy(src, dest, src2, file2);
+  //pindah(src2, dest, file2);
+  //void pindah(char *lokasi, char *file, char *nama)
+  while ((waitpid(child, &status, 0)) > 0)
+    ;
+  pid_t child2 = fork();
+  if (child2 == 0)
+  {
+    char *argv[] = {"mkdir", "-p", lokasi, NULL};
+    execv("/bin/mkdir", argv);
+  }
+  while ((waitpid(child2, &status, 0)) > 0)
+    ;
+  pid_t child3 = fork();
+
+  if (child3 == 0)
+  {
+    char nick[100];
+    char petname[100];
+    char umur[100];
+    char ket[100];
+
+    strcpy(nick, nama);
+    char delim[] = ";";
+    char *ptr = strtok(nick, delim);
+    int id = 1;
+
+    while (ptr != NULL)
+    {
+      if (id == 2)
+      {
+        sprintf(petname, "%s", ptr);
+      }
+      if (id == 3)
+      {
+        sprintf(umur, "%s", ptr);
+        strtok(umur, "_");
+        strtok(umur, "j");
+        if (umur[strlen(umur) - 1] == '.')
+        {
+          umur[strlen(umur) - 1] = '\0';
+        }
+      }
+      ptr = strtok(NULL, delim);
+      id++;
+    }
+
+    char loc[100];
+    strcpy(ket, lokasi);
+    strcpy(loc, lokasi);
+    strcat(loc, "/");
+    strcat(loc, petname);
+    strcat(loc, ".jpg");
+
+    FILE *fptr;
+    char st[100];
+    char fname[50];
+    strcpy(fname, lokasi);
+    strcat(fname, "/keterangan.txt");
+    fptr = fopen(fname, "a+");
+
+    fprintf(fptr, "nama : %s\n", petname);
+    fprintf(fptr, "umur : %s tahun\n\n", umur);
+
+    fclose(fptr);
+
+    char *argv[] = {"mv", dest, loc, NULL};
+    execv("/bin/mv", argv);
+  }
+}
+```
+Untuk membuat file dapat dilakukan dengan proses yang ada pada fungsi `pindah` dan `copy` berikut 
+```
+ pid_t child2 = fork();
+  if (child2 == 0)
+  {
+    char *argv[] = {"mkdir", "-p", lokasi, NULL};
+    execv("/bin/mkdir", argv);
+  }
+```
+### Soal 2C
+Pada soal 2c, diminta untuk memindahkan file sesuai dengan jenisnya dan direname sesuai namanya. Hal tersebut dapat dilakukan dengan proses berikut
+```
+ if (child3 == 0)
+  {
+    char nick[100];
+    char petname[100];
+    char umur[100];
+    char ket[100];
+
+    strcpy(nick, nama);
+    char delim[] = ";";
+    char *ptr = strtok(nick, delim);
+    int id = 1;
+
+    while (ptr != NULL)
+    {
+      if (id == 2)
+      {
+        sprintf(petname, "%s", ptr);
+      }
+      if (id == 3)
+      {
+        sprintf(umur, "%s", ptr);
+        strtok(umur, "_");
+        strtok(umur, "j");
+        if (umur[strlen(umur) - 1] == '.')
+        {
+          umur[strlen(umur) - 1] = '\0';
+        }
+      }
+      ptr = strtok(NULL, delim);
+      id++;
+    }
+    //ini untuk 3e
+    char loc[100];
+    strcpy(ket, lokasi);
+    strcpy(loc, lokasi);
+    strcat(loc, "/");
+    strcat(loc, petname);
+    strcat(loc, ".jpg");
+
+    FILE *fptr;
+    char st[100];
+    char fname[50];
+    strcpy(fname, lokasi);
+    strcat(fname, "/keterangan.txt");
+    fptr = fopen(fname, "a+");
+    //3e sampai disini
+    fprintf(fptr, "nama : %s\n", petname);
+    fprintf(fptr, "umur : %s tahun\n\n", umur);
+
+    fclose(fptr);
+
+    char *argv[] = {"mv", file, loc, NULL};
+    execv("/bin/mv", argv);
+  }
+```
+Untuk mendapatkan nama dari perliharaan dapat dilakukan dengan
+```
+  strcpy(nick, nama);
+    char delim[] = ";";
+    char *ptr = strtok(nick, delim);
+    int id = 1;
+
+    while (ptr != NULL)
+    {
+      if (id == 2)
+      {
+        sprintf(petname, "%s", ptr);
+      }
+      if (id == 3)
+      {
+        sprintf(umur, "%s", ptr);
+        strtok(umur, "_");
+        strtok(umur, "j");
+        if (umur[strlen(umur) - 1] == '.')
+        {
+          umur[strlen(umur) - 1] = '\0';
+        }
+      }
+      ptr = strtok(NULL, delim);
+      id++;
+    }
+```
+variabel `nama` pada awalnya akan berisi nama awal seperti `cat;joni;6.jpg`(karena fungsi *pindah* hanya untuk 1 peliharan). Lalu dilakukan pemotongan string dengan `strtok(string,delimiter)`. Hingga diperoleh nama dan umurnya. Lalu diganti nama file lama dengan nama yang didapat dengan
+```
+ char *argv[] = {"mv", file, loc, NULL};
+    execv("/bin/mv", argv);
+```
+### Soal 2D
+Diminta untuk memisahkan file yang terdapat lebih dari 1 peliharaan lalu memindahkan dan mengganti namanya sesuai ketentuan pada setiap folder.
+Karena pada **Soal 2B** dapat diperoleh file dengan lebih dari 1 peliharaan, perlu dilakukan duplikasi dengan fungsi `copy` seperti yang telah dibuat.
+Fungsi ini mirip seperti fungsi pindah tetapi di awal terdapat proses duplikasi yaitu
+```
+ pid_t child = fork();
+  if (child == 0)
+  {
+    char *argv[] = {"cp", src, dest, NULL};
+    execv("/bin/cp", argv);
+  }
+```
+Selanjutnya dilakukan proses-proses yang sama sebagaimana yang ada pada fungsi `pindah`.
+### Soal 2E
+Pada soal ini diminta untuk membuat file `keterangan.txt` pada setiap folder dan memasukkan nama dan umur dari setiap peliharaan dalam folder tersebut.
+dapat dilakukan dengan
+```
+ FILE *fptr;
+    char st[100];
+    char fname[50];
+    strcpy(fname, lokasi);
+    strcat(fname, "/keterangan.txt");
+    fptr = fopen(fname, "a+");
+    //3e sampai disini
+    fprintf(fptr, "nama : %s\n", petname);
+    fprintf(fptr, "umur : %s tahun\n\n", umur);
+ ```
+Karena `nama` dan `umur` terlah diperoleh dari **Soal 3C** selanjutnya dilakukan `fopen(fname,"keterangan.txt")` untuk membuka file lalu `fptr = fopen(fname, "a+")` untuk menunjuk/menjangkau bagian akhir dari file *keterangan.txt*. Lalu `fprintf(fptr, "nama : %s\n", petname); ` dan `fprintf(fptr, "umur : %s tahun\n\n", umur);` untuk memasukkan nama dan umur dengan format yang sesuai.
 ## soal3
 Soal3 ini dikerjakan dengan mengimplementasikan materi *Daemon Process* 
 yang telah diajarkan pada modul2. <br>
