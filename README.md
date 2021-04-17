@@ -180,7 +180,7 @@ while (wait(&status6) > 0)
 `/usr/bin/find` untuk mencari pada `/home/raharja/modul2-1/MUSIK`, `/home/raharja/modul2-1/FILM`, dan juga
 `/home/raharja/modul2-1/FOTO`. `"-mindepth", "1"` untuk menandakan bahwa yang dicari adalah semua yang ber `type` 
 directory (`"f"`). Lalu dilakukan pemindahan semua file tersebut dengan `"mv -t ./Fylm {} +"`. `/bin/rm` untuk
-menghapus semua file zip yang sudah sudah di ekstract sebelumnya pada `"/home/raharja/modul2-1/Musik_for_Stevany.zip", 
+menghapus semua file zip yang sudah di ekstract sebelumnya pada `"/home/raharja/modul2-1/Musik_for_Stevany.zip", 
 /home/raharja/modul2-1/"Foto_for_Stevany.zip", /home/raharja/modul2-1/"Film_for_Stevany.zip"` dengan `"rm -r"`.<br><br>
 
 ### Soal 1E
