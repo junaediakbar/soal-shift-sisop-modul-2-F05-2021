@@ -40,7 +40,7 @@ int main()
         exit(EXIT_FAILURE);
     }
  
-    if ((chdir("/home/juned/modul2-1")) < 0)
+    if ((chdir("/home/raharja/modul2-1")) < 0)
     {
         exit(EXIT_FAILURE);
     }
@@ -53,16 +53,16 @@ int main()
  
     while (1)
     {
-        char path[100] = {"/home/juned/modul2-1/"};
-        char pathfilm[100] = {"/home/juned/modul2-1/Fylm"};
-        char pathmusik[100] = {"/home/juned/modul2-1/Musyik"};
-        char pathfoto[100] = {"/home/juned/modul2-1/Fyoto"};
+        char path[100] = {"/home/raharja/modul2-1/"};
+        char pathfilm[100] = {"/home/raharja/modul2-1/Fylm"};
+        char pathmusik[100] = {"/home/raharja/modul2-1/Musyik"};
+        char pathfoto[100] = {"/home/raharja/modul2-1/Pyoto"};
         char linkfilm[100] = {"https://drive.google.com/uc?id=1ktjGgDkL0nNpY-vT7rT7O6ZI47Ke9xcp&export=download"};
         char linkmusik[100] = {"https://drive.google.com/uc?id=1ZG8nRBRPquhYXq_sISdsVcXx5VdEgi-J&export=download"};
         char linkfoto[100] = {"https://drive.google.com/uc?id=1FsrAzb9B5ixooGUs0dGiBr-rC7TS9wTD&export=download"};
-        char locmusik[100] = {"/home/juned/modul2-1/Musik_for_Stevany.zip"};
-        char locfoto[100] = {"/home/juned/modul2-1/Foto_for_Stevany.zip"};
-        char locfilm[100] = {"/home/juned/modul2-1/Fylm.zip"};
+        char locmusik[100] = {"/home/raharja/modul2-1/Musik_for_Stevany.zip"};
+        char locfoto[100] = {"/home/raharja/modul2-1/Foto_for_Stevany.zip"};
+        char locfilm[100] = {"/home/raharja/modul2-1/Film_for_Stevany.zip"};
         pid_t child, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11, child12, child13, child14, child15, child16, child17, child18;
  
         time_t now = time(NULL);
@@ -187,7 +187,7 @@ int main()
                 if (child11 == 0)
                 {
                     char *argv[] = {"find", "./FOTO", "-mindepth", "1", "-type", "f", "-exec", "mv",
-                                    "-t", "./Fyoto", "{}", "+", NULL};
+                                    "-t", "./Pyoto", "{}", "+", NULL};
                     execv("/usr/bin/find", argv);
                 }
                 while (wait(&status8) > 0)
@@ -229,7 +229,7 @@ int main()
                     exit(0);
                 if (child15 == 0)
                 {
-                    char *arg[] = {"zip", "-q", "-rm", "Lopyu_Stevany.zip", "./Musyik", "./Fylm", "./Fyoto", NULL};
+                    char *arg[] = {"zip", "-q", "-rm", "Lopyu_Stevany.zip", "./Musyik", "./Fylm", "./Pyoto", NULL};
                     execv("/usr/bin/zip", arg);
                 }
                 while (wait(&status11) > 0)
