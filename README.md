@@ -201,7 +201,7 @@ if (t->tm_mon == 3 && t->tm_mday == 9 && t->tm_hour == 16 && t->tm_min == 22 && 
 }
 ```
 Proses ini dilakukan pengecekan `(t->tm_mon == 3 && t->tm_mday == 9 && t->tm_hour == 16 && t->tm_min == 22 && t->tm_sec == 0)`, apakah semua proses
-tersebut tadi berjalan otomatis 6 jam sebelum ulang waktu ulang tahun stevany tersebut dimulai.
+tersebut tadi berjalan otomatis 6 jam sebelum waktu ulang tahun stevany tersebut dimulai.
 
 ### Soal 1F
 Untuk soal ini diminta pada waktu ulang tahunnya Stevany, untuk semua folder di zip dengan nama Lopyu_Stevany.zip dan 
