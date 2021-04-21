@@ -947,7 +947,112 @@ Ketika proses pembuatan *status.txt* dijalankan, pada directory yang telah dibua
 <img src="images/soal3/3cZipInside.PNG">
 
 ### Soal 3D
-Tidak paham cara membuat 2 executable program dengan fungsi yang berbeda dari satu source code yang sama.<br>
+Buat sebuah program "Killer" yang executable, dimana program tersebut akan menterminasi semua proses program
+yang sedang berjalan dan menghapus dirinya sendiri setelah program dijalankan. Program yang dibuat merupakan 
+**program Bash**.<br><br>
+
+Untuk menyelesaikan permasalahan diatas, ditambahkan fungsi membuat script *killer* executable sebagai berikut:<br>
+```
+void myKill(){    
+	char *temp = (char *)calloc(80, sizeof(char));
+	sprintf(temp, "#!/bin/bash\npkill -9 \"soal3\"\nrm -- \"$0\"");
+	FILE *fp;
+	fp = fopen("killer.sh", "a+");
+	fprintf(fp,"%s", temp);
+	fclose(fp);
+
+	char *argv6[] = {"makeItExecutable", "a+x", "killer.sh", NULL};
+	execv("/usr/bin/chmod", argv6);
+}
+```
+Penjelasan mengenai perintah - perintah diatas adalah :
+- `sprintf(temp, "#!/bin/bash\npkill -9 \"soal3\"\nrm -- \"$0\"");`, digunakan untuk menyusun string program bash 
+yang nantinya akan dijadikan sebagai killer. `pkill -9 "soal3"` digunakan untuk selective kill dengan mengirimkan sinyal
+SIGKILL untuk setiap proses yang mengandung nama proses "soal3". `rm -- \"$0\"` digunakan untuk menghapus file killer-nya
+itu sendiri setelah killer di execute.
+- `fp = fopen("killer.sh", "a+");`, membuat file killer.sh yang diberi akses **append+** (read, append, etc)
+- `char *argv6[] = {"makeItExecutable", "a+x", "killer.sh", NULL};`, adalah untuk menyimpan perintah yang akan dijalankan 
+di perintah execv nanti. `a+x` digunakan untuk menandakan bahwa untuk semua user, group, dan others di OS-nya diberikan izin
+untuk mengexecute file *killer.sh* yang dibuat. 
+
+Sedangkan pada main program (***int main***), ditambahkan perintah sebagai berikut :<br>
+```
+if(killerPid < 0){
+	exit(EXIT_FAILURE);
+}
+
+if(killerPid == 0 ){
+	// myKill();    //Da Killa V1
+	myKill(argv[1]);
+}
+```
+
+Tujuan dari perintah diatas adalah untuk membuat proses baru. Dimana proses baru tersebut akan menjalankan
+fungsi pembuatan program *killer.sh* yang telah dijelaskan sebelumnya.<br><br>
+
+Berikut adalah tampilan pada directory program ketika program baru dieksekusi :<br>
+<img src="images/soal3/3dDirectory.png"><br><br>
+
+Ketika program killer di execute, tampilan pada working directory adalah sebegai berikut (killer.sh hilang) : <br>
+<img src="images/soal3/3dAfterDirectory.png"><br><br>
+
+Juga, proses download filenya berhenti : <br>
+<img src="images/soal3/3dAfterInside.png"><br>
 
 ### Soal 3E
-Melihat soal 3 ini pengerjaannya berkelanjutan (kontinu dari A - E), jadi 3E belum dicoba karena 3D masih belum.<br>
+Pengembangan dari soal 3D. Program hanya dapat dijalankan dengan 2 mode. **Mode -z** akan men-generate sebuah killer yang 
+dapat langsung menghentikan setiap proses yang berjalan ketika killer dijalankan. Sedangkan, **Mode -x** akan men-generate 
+killer hanya dapat menghentikan program utama namun tetap membiarkan proses di setiap direktori yang berjalan hingga selesai 
+(Direktori yang sudah dibuat akan mendownload gambar sampai selesai dan membuat file txt, lalu zip dan delete direktori).<br><br>
+
+Untuk menyelesaikannya, dibuat lagi fungsi *myKill v2* yang merupakan hasil pengembangan dari fungsi *mykill v1* dari sub soal sebelumnya :<br>
+```
+void myKill(char *argv){
+    
+    char *temp = (char *)calloc(80, sizeof(char));
+    
+    //kalau passing argumen -z di CLI
+    if(argv[1] == 'z'){
+        sprintf(temp, "#!/bin/bash\npkill -9 \"soal3\"\nrm -- \"$0\"");
+    }
+
+    //kalau passing argumen -x di CLI
+    if(argv[1] == 'x'){
+        sprintf(temp, "#!/bin/bash\nkill -9 %d\nrm -- \"$0\"", getppid());
+    }
+    
+    FILE *fp;
+    fp = fopen("killer.sh", "a+");
+    fprintf(fp,"%s", temp);
+    fclose(fp);
+
+    char *argv6[] = {"makeItExecutable", "a+x", "killer.sh", NULL};
+    execv("/usr/bin/chmod", argv6);
+}
+```
+Untuk argumen **-z** penjelasan eksekusinya sama persis dengan apa yang dijelaskan di sub soal 3D. Sedangkan untuk **Mode -x**, penjelasannya adalah :
+- `sprintf(temp, "#!/bin/bash\nkill -9 %d\nrm -- \"$0\"", getppid());`, digunakan untuk menyusun string program bash 
+yang nantinya akan dijadikan sebagai killer. `kill -9 %d"` digunakan untuk men-kill proses utama pada program dengan mengirimkan sinyal
+SIGKILL kepada PID dari parent process seluruh program. Sehingga nantinya program child yang masih berjalan akan menjadi orphan process
+dan akan menterminasi dirinya sendiri lewat perintah execv yang ada di setiap prosesnya (dengan kata lain, proses child akan menterminasi dirinya
+sendiri ketika proses child telah selesai dieksekusi). `rm -- \"$0\"` digunakan untuk menghapus file killer-nya itu sendiri setelah killer di execute.
+
+Saat program dijalankan dalam mode z :
+<img src="images/soal3/3eZmode.png"><br><br>
+
+Setelah killer dijalankan (file killer menghilang, dan semua proses berhenti) :
+<img src="images/soal3/3eZmodeAfterDirectory.png"><br>
+<img src="images/soal3/3eZmodeAfterInside.png"><br><br>
+
+Sedangkan saat dijalankan pada mode x :
+<img src="images/soal3/3eXmode.png"><br><br>
+
+Setelah killer dijalankan, proses utama baru tidak berjalan (membuat directory lagi) dan hanya akan menyelesaikan
+orphan process yang masih berjalan (hingga zipping selesai) :
+<img src="images/soal3/3eXmodeAfterDirectory.png"><br><br>
+
+#### Kendala 
+- Sempat mengalami kendala pada proses penempatan fork, sehingga prosesnya tidak berhenti berjalan. (Karena tidak ada execv di proses hasil forknya).
+- Pada awalnya bingung bagaimana cara membuat killer untuk mode -x.
+- Sempat bingung bagaimana cara membuat 2 program executable dari satu file source code.  Ternyata bisa diatasi dengan membuat file terlebih dahulu
+kemudian file tersebut di berikan akses executable.
