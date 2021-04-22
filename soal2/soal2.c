@@ -254,6 +254,6 @@ int main()
       (void)closedir(dp);
     }
     else
-      perror("Couldn't open the directory");
+      perror("Couldn't open the directory ");
   }
 }
