@@ -251,7 +251,11 @@ else if (t->tm_mon == 3 && t->tm_mday == 9 && t->tm_hour == 22 && t->tm_min == 2
 Pada proses ini dilakukan pengecekan kembali `(t->tm_mon == 3 && t->tm_mday == 9 && t->tm_hour == 22 && t->tm_min == 22 && t->tm_sec == 0)`,
 apakah proses tersebut tadi berjalan saat waktu ulang tahun stevany dimulai. jika benar, maka dilakukan proses yaitu menzip `("/usr/bin/zip")` 
 semua file pada folder `"./Musyik", "./Fylm", "./Pyoto"` dengan nama "Lopyu_Stevany.zip". `"/bin/rm"` digunakan untuk menjalankan proses dari 
-rm yang dimana mengarah pada proses penghapusan semua folder yang ada di `/home/raharja/modul2-1` dengan `"rm -r"`.
+rm yang dimana mengarah pada proses penghapusan semua folder yang ada di `/home/raharja/modul2-1` dengan `"rm -r"`.<br>
+
+## Kendala Selama Pengerjaan
+- Saat setelah melakukan pendownload-an file zip, posisi file tersebut berada pada folder baru (fylm, pyoto, musyik) bukan di luar folder
+dan itu tidak sesuai dengan perintah yang sudah disampaikan pada nomor 1C.  
 
 ## soal2
 ### Soal 2A
