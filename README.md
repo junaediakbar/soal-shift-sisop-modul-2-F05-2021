@@ -288,7 +288,11 @@ Dan setelah itu diminta untuk menghapus folder yang tidak penting, hal tersebut 
     execv("/usr/bin/find", argv);
   }
 ```
-`/usr/bin/find` untuk mencari pada `/home/juned/modul2/petshop`,  `"-mindepth", "1"` untuk menandakan bahwa yang dicari adalah semua yang ber `type` directory (`"d"`). Lalu dilakukan remove/hapus semua file tersebut dengan `rm -r {} +`
+`/usr/bin/find` untuk mencari pada `/home/juned/modul2/petshop`,  `"-mindepth", "1"` untuk menandakan bahwa yang dicari adalah semua yang ber `type` directory (`"d"`). Lalu dilakukan remove/hapus semua file tersebut dengan `rm -r {} +`.<br><br>
+
+Berikut adalah tampilan directory yang dihasilkan : <br>
+<img src="images/soal2/Soal2a.jpg">
+
 ### Soal 2B
 Pada soal2b diminta untuk membuat folder sesuai jenis peliharaan seperti `/petshop/cat` untuk jenis kucing.
 Agar lebih memudahkan, perlu diperiksa nama dari setiap file terlebih dahulu dengan proses berikut
@@ -623,7 +627,11 @@ Fungsi ini mirip seperti fungsi pindah tetapi di awal terdapat proses duplikasi 
     execv("/bin/cp", argv);
   }
 ```
-Selanjutnya dilakukan proses-proses yang sama sebagaimana yang ada pada fungsi `pindah`.
+Selanjutnya dilakukan proses-proses yang sama sebagaimana yang ada pada fungsi `pindah`.<br><br>
+
+Berikut adalah tampilan directory yang dihasilkan untuk soal 2b - 2d : <br>
+<img src="images/soal2/Soal2b-d.jpg">
+
 ### Soal 2E
 Pada soal ini diminta untuk membuat file `keterangan.txt` pada setiap folder dan memasukkan nama dan umur dari setiap peliharaan dalam folder tersebut.
 dapat dilakukan dengan
@@ -638,7 +646,11 @@ dapat dilakukan dengan
     fprintf(fptr, "nama : %s\n", petname);
     fprintf(fptr, "umur : %s tahun\n\n", umur);
  ```
-Karena `nama` dan `umur` terlah diperoleh dari **Soal 3C** selanjutnya dilakukan `fopen(fname,"keterangan.txt")` untuk membuka file lalu `fptr = fopen(fname, "a+")` untuk menunjuk/menjangkau bagian akhir dari file *keterangan.txt*. Lalu `fprintf(fptr, "nama : %s\n", petname); ` dan `fprintf(fptr, "umur : %s tahun\n\n", umur);` untuk memasukkan nama dan umur dengan format yang sesuai.
+Karena `nama` dan `umur` terlah diperoleh dari **Soal 3C** selanjutnya dilakukan `fopen(fname,"keterangan.txt")` untuk membuka file lalu `fptr = fopen(fname, "a+")` untuk menunjuk/menjangkau bagian akhir dari file *keterangan.txt*. Lalu `fprintf(fptr, "nama : %s\n", petname); ` dan `fprintf(fptr, "umur : %s tahun\n\n", umur);` untuk memasukkan nama dan umur dengan format yang sesuai.<br><br>
+
+Berikut adalah tampilan directory yang dihasilkan untuk soal 2b - 2d : <br>
+<img src="images/soal2/Soal2e.jpg">
+
 ## soal3
 Soal3 ini dikerjakan dengan mengimplementasikan materi *Daemon Process* 
 yang telah diajarkan pada modul2. <br>
