@@ -203,6 +203,10 @@ if (t->tm_mon == 3 && t->tm_mday == 9 && t->tm_hour == 16 && t->tm_min == 22 && 
 Proses ini dilakukan pengecekan `(t->tm_mon == 3 && t->tm_mday == 9 && t->tm_hour == 16 && t->tm_min == 22 && t->tm_sec == 0)`, apakah semua proses
 tersebut tadi berjalan otomatis 6 jam sebelum waktu ulang tahun stevany tersebut dimulai.
 
+Berikut ilustrasi jika program dijalankan secara otomatis sebelum ulang tahun stevany :<br>
+<img src="images/soal1/soal1-2.jpg">
+<img src="images/soal1/soal1.jpg">
+
 ### Soal 1F
 Untuk soal ini diminta pada waktu ulang tahunnya Stevany, untuk semua folder di zip dengan nama Lopyu_Stevany.zip dan 
 semua folder akan di delete(sehingga hanya menyisakan .zip).<br><br>
@@ -252,6 +256,9 @@ Pada proses ini dilakukan pengecekan kembali `(t->tm_mon == 3 && t->tm_mday == 9
 apakah proses tersebut tadi berjalan saat waktu ulang tahun stevany dimulai. jika benar, maka dilakukan proses yaitu menzip `("/usr/bin/zip")` 
 semua file pada folder `"./Musyik", "./Fylm", "./Pyoto"` dengan nama "Lopyu_Stevany.zip". `"/bin/rm"` digunakan untuk menjalankan proses dari 
 rm yang dimana mengarah pada proses penghapusan semua folder yang ada di `/home/raharja/modul2-1` dengan `"rm -r"`.<br>
+
+Berikut ilustrasi jika program dijalankan secara otomatis dan melakukan penzip-an dan penghapusan folder :<br>
+<img src="images/soal1/soal1-3.jpg">
 
 ## Kendala Selama Pengerjaan
 - Saat setelah melakukan pendownload-an file zip, posisi file tersebut berada pada folder baru (fylm, pyoto, musyik) bukan di luar folder
