@@ -648,7 +648,7 @@ dapat dilakukan dengan
  ```
 Karena `nama` dan `umur` terlah diperoleh dari **Soal 3C** selanjutnya dilakukan `fopen(fname,"keterangan.txt")` untuk membuka file lalu `fptr = fopen(fname, "a+")` untuk menunjuk/menjangkau bagian akhir dari file *keterangan.txt*. Lalu `fprintf(fptr, "nama : %s\n", petname); ` dan `fprintf(fptr, "umur : %s tahun\n\n", umur);` untuk memasukkan nama dan umur dengan format yang sesuai.<br><br>
 
-Berikut adalah tampilan directory yang dihasilkan untuk soal 2b - 2d : <br>
+Berikut adalah tampilan keterangan.txt yang dihasilkan : <br>
 <img src="images/soal2/Soal2e.jpg">
 
 ## soal3
